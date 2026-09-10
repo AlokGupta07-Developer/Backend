@@ -1,0 +1,1 @@
+In day-3 of learning Backend... I am going to create a simple notes so create a post method api and user send data via postman in row/json format... and get method used to get data from the server and this data save into the notes array  

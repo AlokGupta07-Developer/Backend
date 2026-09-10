@@ -1,0 +1,1 @@
+In day-2 i am  creating a simple APIs for get data from the server and show response Hello World and than if we give a path /about so give response this is about page
