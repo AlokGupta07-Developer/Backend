@@ -1,32 +1,36 @@
-const express = require("express")
+const express = require("express");
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());  //Middleware
 
-const notes = []
+const notes = [];         //Blank array
 
-app.post('/notes', (req,res) => {
-    // console.log(req.body)
-    notes.push(req.body)
-    console.log(notes)
+//Method: POST, API name: notes
+app.post("/notes", (req, res) => {
+  console.log(req.body)
+  notes.push(req.body);
+  console.log(notes);
 
-    res.send("Notes created")
-})
+  res.send("Notes created");
+});
 
-app.get('/notes',(req,res) =>{
-    res.send(notes)
-})
+//Method: GET, API name: notes
+app.get("/notes", (req, res) => {
+  res.send(notes);
+});
 
-app.delete('/notes/:index',(req,res)=>{
-    console.log(req.params.index)
-    delete [req.params.index]
-    res.send("Note deleted")
-})
+//Method: DELETE, API name: notes
+app.delete("/notes/:index", (req, res) => {
+  console.log(req.params.index);
+  delete [req.params.index];
+  res.send("Note deleted");
+});
 
-app.patch('/notes/:index',(req,res)=>{
-    notes[req.params.index].title = req.body.title
-    res.send("Notes update successfully")
-})
+//Method: PATCH, API name: notes
+app.patch("/notes/:index", (req, res) => {
+  notes[req.params.index].title = req.body.title;
+  res.send("Notes title update successfully");
+});
 
-module.exports = app
+module.exports = app;
