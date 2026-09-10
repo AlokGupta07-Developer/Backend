@@ -1,0 +1,1 @@
+In day-5 of Backend...Today also create a notes but today am using proper response status code like 200, 201 when i am creating a APIs so this is best way to send or recieves response 
