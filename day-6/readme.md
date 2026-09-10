@@ -1,0 +1,1 @@
+In day-6 of Backend series... I am learning a how to install mongoDB and how to  create a database and how to connect to the server... in previous day i am using a variable of notes array so i restart the server (ctrl c) the data erased... so this is big problem thats why am try to learn database 
