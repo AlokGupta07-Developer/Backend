@@ -1,36 +1,61 @@
-const express = require("express")
-const app = express()
+const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 const noteModel = require("./models/notes.models");
 
+app.use(express.json()); //Middleware
 
-app.use(express.json())
+//POST
+app.post("/notes", async (req, res) => {
+  const { title, description } = req.body;
 
-app.post('/notes',async(req,res)=>{
-    const {title,description} = req.body
+  const note = await noteModel.create({
+    title,
+    description,
+  });
 
-    const note = await noteModel.create({
-        title,description
-    })
+  res.status(201).json({
+    message: "Notes created successfully",
+    note,
+  });
+});
 
-    res.status(201).json({
-        message: "Notes created successfully",
-        note
-    })
-})
+//GET
+app.get("/notes", async (req, res) => {
+  const note = await noteModel.find();
 
-app.get('/notes',async(req,res)=>{
-    const notes = await noteModel.find()
+  res.status(200).json({
+    message: "Note send successfully",
+    note,
+  });
+});
 
-    res.status(200).json({
-        message: "Notes fetch successfully",
-        notes
-    })
-})
+//DELETE
+app.delete("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const note = await noteModel.findByIdAndDelete(id);
 
+  res.status(200).json({
+    message: "Note deleted successfully",
+  });
+});
 
+//PATCH
+app.patch("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  const { description } = req.body;
 
+  const note = await noteModel.findByIdAndUpdate(
+    id,
+    { description },
+    { new: true },
+  );
 
+  res.status(200).json({
+    message: "Description updated successfully",
+    note,
+  });
+});
 
-
-module.exports = app
+module.exports = app;
