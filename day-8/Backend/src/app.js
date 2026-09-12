@@ -1,68 +1,68 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const noteModel = require("./models/notesModels");
-const cors = require("cors");
-const path = require("path");
+const express = require("express")
+const app = express()
+const noteModel = require("./model/notesModel")
+const cors = require("cors")
+const path = require("path")
 
-//Middleware.......
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "..", "public")));
+module.exports = app
 
-//post API........
-app.post("/api/notes", async (req, res) => {
-  console.log(res.body);
-  const { title, description } = req.body;
+app.use(express.json())  //Middleware
+app.use(cors())  //cors policy used to run frontend & backend on diffrent port
+app.use(express.static(path.join(__dirname, "public")))
 
-  const note = await noteModel.create({
-    title,
-    description,
-  });
+//To  create note Method: POST, name: notes
+app.post("/notes",async (req,res)=>{
+    const {title, description} = req.body
+    console.log(req.body)
+    const note = await noteModel.create({
+        title,description
+    })
 
-  res.status(201).json({
-    message: "Note created successfully",
-    note,
-  });
-});
+    res.status(201).json({
+        message: "Note created Successfully",
+    })
+})
 
-//Get API
-app.get("/api/notes", async (req, res) => {
-  const notes = await noteModel.find();
+//To fetch note method: GET, name:notes
+app.get("/notes",async (req,res)=>{
+    const note = await noteModel.find()
 
-  res.status(200).json({
-    message: "Notes created successfully",
-    notes,
-  });
-});
+    res.status(200).json({
+        message: "Note fetch successfully",
+        notes: note
+    })
+})
 
-//Delete API
-app.delete("/api/notes/:id", async (req, res) => {
-  const id = req.params.id;
-  await noteModel.findByIdAndDelete(id);
-  console.log(id);
+//To delete note method: DELETE, name: notes
+app.delete("/notes/:id", async (req,res)=>{
+    const id = req.params.id
+    console.log(id)
+    const note = await noteModel.findByIdAndDelete(id)
 
-  res.status(200).json({
-    message: "note deleted successfully",
-  });
-});
+    res.status(200).json({
+        message: "Note deleted successfully",
+        note //show deleted note
+    })
+})
 
-//Patch API
-app.patch("/api/notes/:id", async (req, res) => {
-  const id = req.params.id;
-  const { description } = req.body;
+//To update note method: PATCH, name: notes
+app.patch("/notes/:id", async (req, res) => {
+    const id = req.params.id
+    const { title, description } = req.body
 
-  await noteModel.findByIdAndUpdate(id, { description });
+    const note = await noteModel.findByIdAndUpdate(
+        id,
+        { title, description },
+        { new: true }
+    )
 
-  res.status(200).json({
-    message: "note updated successfully",
-  });
-});
+    res.status(200).json({
+        message: "Title and description updated successfully",
+        note
+    })
+})
 
-console.log(__dirname);
-//wild card route
-app.use("*name", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
-});
 
-module.exports = app;
+app.use("*name",(req,res)=>{
+    res.sendFile(path.join(__dirname, "/public/index.html"))
+})
