@@ -1,0 +1,1 @@
+In day-7 of backend series... I learn how to add database and connect to server. now am create 4  methods of api which have a notes create, get, read, update using CRUD operation with proper response status and test api using postman 
