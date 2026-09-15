@@ -1,0 +1,1 @@
+In day-10 of backend series I learn if i save password without hash so my register or login password stolen so today i use hash password by crypto so if anyone see than show hash format not show actual password

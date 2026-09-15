@@ -1,80 +1,89 @@
-const express = require('express');
-const userModel = require('../model/notesModel');
-const jwt = require('jsonwebtoken')
-const crypto = require('crypto')
+const express = require("express");
+const userModel = require("../model/notesModel");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
+const authRouter = express.Router();
 
-const authRouter = express.Router()
+//create a user register API with method: POST
+authRouter.post("/register", async (req, res) => {
+  const { username, email, password } = req.body;
 
-authRouter.post('/register',async(req,res)=>{
-    const {username,email,password,} = req.body
+  const isUserAlreadyExists = await userModel.findOne({ email });
 
-    const isUserAlreadyExists = await userModel.findOne({email})
+  if (isUserAlreadyExists) {
+    return res.status(400).json({
+      message: "User already exists with this email address",
+    });
+  }
 
-    if(isUserAlreadyExists) {
-        return res.status(400).json({
-            message: "User already exists with this email address"
-        })
-    }
+  //using hash password
+  const hash = crypto.createHash("md5").update(password).digest("hex");
 
-    const hash = crypto.createHash("md5").update(password).digest("hex")
+  const user = await userModel.create({
+    email,
+    username,
+    password: hash,
+  });
 
-    const user = await userModel.create({
-        email,username,password:hash
-    })
-
-    const token = jwt.sign({
-        id: user._id
+  //create token
+  const token = jwt.sign(
+    {
+      id: user._id,
     },
-    process.env.JWT_SECRET
-)
+    process.env.JWT_SECRET,
+  );
 
-    res.cookie("JWT_token",token)
-    
-    res.status(201).json({
-        message: "User Registered",
-        user,
-        token
-    })
-})
+  res.cookie("JWT_token", token);
 
-authRouter.post('/protected',(req,res)=>{
-    console.log(req.cookies)
+  res.status(201).json({
+    message: "User Registered",
+    user,
+    token,
+  });
+});
 
-    res.status(200).json({
-        message: "Cookie send sucessfully",
-    })
-})
+//make protected APIs to see cookies
+authRouter.post("/protected", (req, res) => {
+  console.log(req.cookies);
 
-authRouter.post('/login',async(req,res)=>{
-    const {email,password} = req.body
+  res.status(200).json({
+    message: "Cookie send sucessfully",
+  });
+});
 
-    const user = await userModel.findOne({email})
+//create API for user login after register. method: POST 
+authRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-    if(!user) {
-        return res.status(404).json({
-            message: "User not found with this email address"
-        })
-    }
+  const user = await userModel.findOne({ email });
 
-    
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found with this email address",
+    });
+  }
 
-    const isPasswordMatched = user.password === crypto.createHash("md5").update(password).digest("hex")
+  const isPasswordMatched =
+    user.password === crypto.createHash("md5").update(password).digest("hex");
 
-    if(!isPasswordMatched) {
-        return res.status(401).json({
-            message: "Invalid Password"
-        })
-    }            
+  if (!isPasswordMatched) {
+    return res.status(401).json({
+      message: "Invalid Password",
+    });
+  }
 
-    const token = jwt.sign({
-        id: user._id
-    }, process.env.JWT_SECRET)
+  const token = jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.JWT_SECRET,
+  );
 
-    res.cookie("JWT_Cookie", token)
+  res.cookie("JWT_Cookie", token);
 
-    res.status(200).json({
-        message: "User logged in sucessfully"
-    })
-})
-module.exports = authRouter
+  res.status(200).json({
+    message: "User logged in sucessfully",
+  });
+});
+module.exports = authRouter;
