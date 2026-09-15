@@ -1,0 +1,1 @@
+In day-9 of backend series... i learn Authentication i make a seprate folder name is routes then i make a user register with email,userName,password this save in database then server give a token with JWT sign and token stores in cookie

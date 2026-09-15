@@ -5,8 +5,9 @@ const jwt = require('jsonwebtoken')
 
 const authRouter = express.Router()
 
+//APIs method: POST, user registration
 authRouter.post('/register',async(req,res)=>{
-    const {username,email,password,} = req.body
+    const {username,email,password} = req.body
 
     const isUserAlreadyExists = await userModel.findOne({email})
 
