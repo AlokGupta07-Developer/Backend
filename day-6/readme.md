@@ -1,1 +1,10 @@
-In day-6 of Backend series... I am learning a how to install mongoDB, how to  create a database,how to connect to the server... in previous day i am using a variable that is notes array so i restart the server (ctrl c) the data erased because variable in js like a memory container... so this is big problem thats why am try to learn database 
+# 🚀 Day 6 – Backend Development Journey
+
+## 📌 What I Learned Today
+
+In **Day 6 of my Backend Development series**, I started learning about **MongoDB** and how databases are used to store data permanently.
+
+In the previous days, I was storing my notes inside a JavaScript variable:
+
+```js
+let notes = [];
