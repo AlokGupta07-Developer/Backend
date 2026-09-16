@@ -1,1 +1,15 @@
-In day-5 of Backend...Today also create a notes but today am using proper response status code like 200, 201 when i am creating a APIs so this is best way to send or recieves response 
+# 🚀 Backend Development Journey — Day 5
+
+## 📝 Notes API with Proper HTTP Status Codes
+
+Welcome to **Day 5 of my Backend Development Journey!** 👨‍💻
+
+Today, I continued working on my **Notes API**, but this time I focused on something very important in backend development — **HTTP Response Status Codes**.
+
+Instead of sending only a response message, I learned how to send an appropriate **status code along with the response**.
+
+For example:
+
+```text
+200 → Request successful
+201 → Resource successfully created
