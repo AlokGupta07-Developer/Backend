@@ -4,28 +4,11 @@ import { useEffect, useState } from "react";
 const App = () => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateNoteId, setUpdateNoteId] = useState(null);
-  const [notes, setNotes] = useState([
-    {
-      title: "text-title 1",
-      description: "text-description 1",
-    },
-    {
-      title: "text-title 1",
-      description: "text-description 1",
-    },
-    {
-      title: "text-title 1",
-      description: "text-description 1",
-    },
-    {
-      title: "text-title 1",
-      description: "text-description 1",
-    },
-  ]);
+  const [notes, setNotes] = useState(null);
 
   //Fetch notes from Backend. Method: GET
   function fetchNotes() {
-    axios.get("http://localhost:3000/notes").then((res) => {
+    axios.get("https://note-app-22uk.onrender.com/").then((res) => {
       console.log(res.data);
       setNotes(res.data.note);
     });
@@ -43,7 +26,7 @@ const App = () => {
     console.log(title.value, description.value);
 
     axios
-      .post("http://localhost:3000/notes", {
+      .post("https://note-app-22uk.onrender.com/", {
         title: title.value,
         description: description.value,
       })
@@ -56,7 +39,7 @@ const App = () => {
 
   //To delete note
   function handleDeleteNote(noteId) {
-    axios.delete(`http://localhost:3000/notes/${noteId}`).then((res) => {
+    axios.delete(`https://note-app-22uk.onrender.com/${noteId}`).then((res) => {
       console.log(res.data);
       fetchNotes();
     });
@@ -73,7 +56,7 @@ const App = () => {
     const { title, description } = e.target.elements;
 
     axios
-      .patch(`http://localhost:3000/notes/${updateNoteId}`, {
+      .patch(`https://note-app-22uk.onrender.com/${updateNoteId}`, {
         title: title.value,
         description: description.value,
       })
