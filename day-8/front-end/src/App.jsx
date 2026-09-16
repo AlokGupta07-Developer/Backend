@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const App = () => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateNoteId, setUpdateNoteId] = useState(null);
-  const [notes, setNotes] = useState(null);
+  const [notes, setNotes] = useState([]);
 
   //Fetch notes from Backend. Method: GET
   function fetchNotes() {
