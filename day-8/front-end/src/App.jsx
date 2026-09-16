@@ -8,7 +8,7 @@ const App = () => {
 
   //Fetch notes from Backend. Method: GET
   function fetchNotes() {
-    axios.get("https://note-app-22uk.onrender.com/").then((res) => {
+    axios.get("https://note-app-22uk.onrender.com/notes").then((res) => {
       console.log(res.data);
       setNotes(res.data.notes);
     });
@@ -26,7 +26,7 @@ const App = () => {
     console.log(title.value, description.value);
 
     axios
-      .post("https://note-app-22uk.onrender.com/", {
+      .post("https://note-app-22uk.onrender.com/notes", {
         title: title.value,
         description: description.value,
       })
@@ -39,7 +39,7 @@ const App = () => {
 
   //To delete note
   function handleDeleteNote(noteId) {
-    axios.delete(`https://note-app-22uk.onrender.com/${noteId}`).then((res) => {
+    axios.delete(`https://note-app-22uk.onrender.com/notes/${noteId}`).then((res) => {
       console.log(res.data);
       fetchNotes();
     });
@@ -56,7 +56,7 @@ const App = () => {
     const { title, description } = e.target.elements;
 
     axios
-      .patch(`https://note-app-22uk.onrender.com/${updateNoteId}`, {
+      .patch(`https://note-app-22uk.onrender.com/notes/${updateNoteId}`, {
         title: title.value,
         description: description.value,
       })
