@@ -27,7 +27,7 @@ app.get("/notes", async (req, res) => {
 
   res.status(200).json({
     message: "Fetch notes successfully",
-    note,
+    notes: note,
   });
 });
 

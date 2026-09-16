@@ -10,7 +10,7 @@ const App = () => {
   function fetchNotes() {
     axios.get("https://note-app-22uk.onrender.com/").then((res) => {
       console.log(res.data);
-      setNotes(res.data.note);
+      setNotes(res.data.notes);
     });
   }
 
