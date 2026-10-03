@@ -1,11 +1,12 @@
+//Require essentials...
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 const noteModel = require("./models/notes.models");
 
-app.use(express.json()); //Middleware
+//Middleware
+app.use(express.json()); 
 
-//POST
+//Method: POST, name: /notes
 app.post("/notes", async (req, res) => {
   const { title, description } = req.body;
 
@@ -20,17 +21,17 @@ app.post("/notes", async (req, res) => {
   });
 });
 
-//GET
+//Method: GET, name: /notes
 app.get("/notes", async (req, res) => {
   const note = await noteModel.find();
 
   res.status(200).json({
-    message: "Note send successfully",
+    message: "Note fetched successfully",
     note,
   });
 });
 
-//DELETE
+//Method: DELETE, name: /notes/id
 app.delete("/notes/:id", async (req, res) => {
   const id = req.params.id;
   console.log(id);
@@ -38,10 +39,11 @@ app.delete("/notes/:id", async (req, res) => {
 
   res.status(200).json({
     message: "Note deleted successfully",
+    note
   });
 });
 
-//PATCH
+//Method: PATCH, name: /notes/id
 app.patch("/notes/:id", async (req, res) => {
   const id = req.params.id;
   const { description } = req.body;

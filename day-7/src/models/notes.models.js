@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
 
-const noteSchema = new mongoose.Schema({  //for formatting
+//Before store data into DB first to make schema...
+const noteSchema = new mongoose.Schema({  
     title: String,
     description: String,
 })
 
-const noteModel = mongoose.model('notes',noteSchema)  //notes: collection name, notemodel: create a model
+//Collection: notes
+const noteModel = mongoose.model('notes',noteSchema)  
 
 module.exports = noteModel
 
