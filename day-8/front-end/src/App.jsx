@@ -1,10 +1,11 @@
+//Importing essentials...
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 const App = () => {
+  const [notes, setNotes] = useState([]);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateNoteId, setUpdateNoteId] = useState(null);
-  const [notes, setNotes] = useState([]);
 
   //Fetch notes from Backend. Method: GET
   function fetchNotes() {
@@ -14,8 +15,9 @@ const App = () => {
     });
   }
 
+//use useEffect because every render call axios so data comes multiple times
   useEffect(() => {
-    //use useEffect because every render call axios so data comes multiple times
+
     fetchNotes();
   }, []);
 
@@ -70,11 +72,12 @@ const App = () => {
       });
   }
 
-  //function call on submit form
   return (
     <div className="app">
       <form className="create-note-form" onSubmit={handleNotes}>
-        <input type="text" name="title" placeholder="Enter note title" />
+        <input type="text" 
+        name="title" 
+         placeholder="Enter note title" />
         <input
           type="text"
           name="description"

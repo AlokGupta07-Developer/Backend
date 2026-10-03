@@ -1,15 +1,16 @@
+//Requires all essentials...
 const express = require("express");
 const app = express();
 const notesModel = require("./model/notesModel");
 const cors = require("cors")
 const path = require("path")
 
-//A dd middleware without this show undefined
+//Add middlewares... without this show undefined
 app.use(express.json());
 app.use(cors())
 app.use(express.static(path.join(__dirname, "..", "public")))
 
-//To create notes... APIs name: notes, method: POST
+//To create notes... APIs name: /notes, method: POST
 app.post("/notes", async (req, res) => {
   const { title, description } = req.body;
   const note = await notesModel.create({
@@ -21,7 +22,7 @@ app.post("/notes", async (req, res) => {
   });
 });
 
-//To see notes... APIs name: notes, method: GET
+//To see notes... APIs name: /notes, method: GET
 app.get("/notes", async (req, res) => {
   const note = await notesModel.find();
 
@@ -31,7 +32,7 @@ app.get("/notes", async (req, res) => {
   });
 });
 
-//To Delete notes... APIs name: notes, method: DELETE
+//To Delete notes... APIs name: /notes/id, method: DELETE
 app.delete("/notes/:id", async (req, res) => {
   const id = req.params.id;
   await notesModel.findByIdAndDelete(id);
@@ -41,7 +42,7 @@ app.delete("/notes/:id", async (req, res) => {
   });
 });
 
-//To Update partial notes... APIs name: notes, method: PATCH
+//To Update partial notes... APIs name: /notes/id, method: PATCH
 app.patch("/notes/:id", async (req, res) => {
   const id = req.params.id;
   const { title, description } = req.body;
@@ -56,4 +57,6 @@ app.patch("/notes/:id", async (req, res) => {
 app.use("*name",(req,res)=>{
   res.sendFile(path.join(__dirname, "/public", "index.html"))
 })
+
+
 module.exports = app;
