@@ -21,16 +21,23 @@ app.get("/notes", (req, res) => {
 
 //APIs method: DELETE, name: notes
 app.delete("/notes/:index", (req, res) => {
-  notes[req.params.index];
-  console.log(req.params.index);
+  const index = Number(req.params.index)
+  notes.splice(index, 1)
+  res.status(204).json(
+    {
+      message: "Note deleted successfully"
+    }
+  )
 });
 
 //APIs method: PATCH, name: notes
 app.patch("/notes/:index", (req, res) => {
-  notes[req.params.index].Description = req.body.Description;
+  const index = req.params.index
+  notes[index].Description = req.body.Description;
 
   res.status(200).json({
-    message: "Notes Description Updated Successfully",
+    message: "Note Description Updated Successfully",
+    note: notes[index]
   });
 });
 module.exports = app;
