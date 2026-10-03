@@ -1,4 +1,28 @@
-In my day-8 of backend series... Making Note app:  
-Today i learn how to create, start, config the server and then connecting database then i create a note schema which have title and description format string as usual then create a model with collection name: notes, then am going to create 4 HTTP method of APIs which is POST(To create the note), GET(To see the note), DELETE(To delete the note), PATCH(To update the title or description) and testing our all APIs through postman all working properly and now am going to create Front-end part using react vite... so i create a note app so you can create note using form and submit button (Method: POST), get note from backend ans show on frontend (Method: GET), and delete note (Method: DELETE), and last is update our title or description using (Method: PATCH)..
+# 🚀 Day 8 – Backend Development Journey
 
-Simple and responsive UI
+## 📌 What I Learned Today
+
+In **Day 8 of my Backend Development series**, I focused on improving my understanding of how a backend API works with a frontend application.
+
+Today, I worked with my **Notes API** and understood how the backend handles requests coming from the frontend.
+
+---
+
+## 🔗 Backend API Integration
+
+I connected my Notes API with a React frontend using **Axios**.
+
+The backend was responsible for handling all the CRUD operations:
+
+```text
+Frontend
+   ↓
+Axios Request
+   ↓
+Express Backend
+   ↓
+MongoDB
+   ↓
+Response
+   ↓
+Frontend
