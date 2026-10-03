@@ -22,8 +22,8 @@ app.get("/notes", (req, res) => {
 
 //Method: DELETE, API name: notes
 app.delete("/notes/:index", (req, res) => {
-  console.log(req.params.index);
-  delete [req.params.index];
+  const index = Number(req.params.index)
+  notes.splice(index, 1)
   res.send("Note deleted");
 });
 
