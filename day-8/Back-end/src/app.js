@@ -2,13 +2,13 @@
 const express = require("express");
 const app = express();
 const notesModel = require("./model/notesModel");
-const cors = require("cors")
-const path = require("path")
+const cors = require("cors");
+const path = require("path");
 
 //Add middlewares... without this show undefined
 app.use(express.json());
-app.use(cors())
-app.use(express.static(path.join(__dirname, "..", "public")))
+app.use(cors());
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 //To create notes... APIs name: /notes, method: POST
 app.post("/notes", async (req, res) => {
@@ -45,18 +45,28 @@ app.delete("/notes/:id", async (req, res) => {
 //To Update partial notes... APIs name: /notes/id, method: PATCH
 app.patch("/notes/:id", async (req, res) => {
   const id = req.params.id;
-  const { title, description } = req.body;
-  await notesModel.findByIdAndUpdate(id, { title, description });
+  const {title, description} = req.body
+  const updateData = {};
+  if (title && title.trim() !== "") {
+    updateData.title = title;
+  }
 
+  if (description && description.trim() !== "") {
+    updateData.description = description;
+  }
+
+  const note = await notesModel.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
   res.status(200).json({
-    message: "note title and description updated successfully",
+    message: "Note updated successfully",
+    note,
   });
 });
 
 //To create wild card route
-app.use("*name",(req,res)=>{
-  res.sendFile(path.join(__dirname, "/public", "index.html"))
-})
-
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public", "index.html"));
+});
 
 module.exports = app;
