@@ -1,10 +1,11 @@
-const express = require('express')
-const authRouter = require('./routes/auth.routes')
-const cookieParser = require('cookie-parser')
-const app = express()
+const express = require("express");
+const app = express();
+const authRouter = require("./routes/auth.routes");
+const cookieParser = require("cookie-parser");
 
-app.use(express.json())
-app.use(cookieParser())
-app.use('/api/auth',authRouter)
+//Middlewares...
+app.use(express.json());
+app.use(cookieParser());
+app.use("/api/auth", authRouter);
 
-module.exports = app
+module.exports = app;
