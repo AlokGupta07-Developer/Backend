@@ -1,11 +1,11 @@
 const express = require("express");
-const userModel = require("../model/notesModel");
+const userModel = require("../model/authModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const authRouter = express.Router();
 
-//create a user register API with method: POST
+//create a user register API with method: POST, name: /api/auth/register
 authRouter.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -52,7 +52,7 @@ authRouter.post("/protected", (req, res) => {
   });
 });
 
-//create API for user login after register. method: POST 
+//create API for user login after register. method: POST, name: /api/auth/login
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
