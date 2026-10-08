@@ -1,0 +1,26 @@
+Proect: Instagram clone: 
+
+Dummy ideas: 
+
+Part: 1.  Authentication: User registration, login
+Step:(i) Make users Schema:{
+    userName: String,
+    email: String,
+    password: String,
+    Bio: String,
+    profileImage: String
+}
+
+Step: (ii) create API for user registration... Method: POST, name: /api/auth/register
+Step: (iii) create API for user login... Method: POST, name: /api/auth/login
+
+Part: 2. User creating a posts
+
+Step:(i) Make postSchema: {
+    userId: To identify which user creating a posts,
+    imageURL: Post images,
+    caption: defalut,
+}
+
+Step:(ii) create API for posts... Method: POST, name: /api/post/
+
