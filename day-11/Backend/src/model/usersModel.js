@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   bio: {
     type: String,
-    default: "",
+    default: "New insta user",
   },
   profileImage: {
     type: String,

@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 async function registerController(req, res) {
   const { userName, email, password, bio, profileImage } = req.body;
 
-
   //Check if user already exist either emailId or userName
   const isUserAlreadyExists = await userModel.findOne({
     $or: [{ userName }, { email }],
@@ -27,8 +26,8 @@ async function registerController(req, res) {
   //create user and save into  DB
   const user = await userModel.create({
     userName,
-    password: hash,
     email,
+    password: hash,
     bio,
     profileImage,
   });
@@ -58,21 +57,14 @@ async function registerController(req, res) {
 
 //User Login controller
 async function loginController(req, res) {
-  const { email, userName, password } = req.body;
+  const { userName, password } = req.body;
 
   //Two conditions to login:
   //condition 1: userName, password
   //condition 2: email, password
 
   const user = await userModel.findOne({
-    $or: [
-      {
-        userName: userName,
-      },
-      {
-        email: email,
-      },
-    ],
+    userName,
   });
 
   //check userName/email already exist or not
@@ -118,24 +110,22 @@ async function loginController(req, res) {
   });
 }
 
-async function getMeController() {
+async function getMeController(req, res) {
+  const userId = req.user.id;
 
-  const userId = req.user.id
-
-  const user = await userModel.findById(userId) 
+  const user = await userModel.findById(userId);
 
   res.status(200).json({
     user: {
       userName: user.userName,
       email: user.email,
-      bio: user.nio,
-      profileImage: user.profileImage
-    }
-  })
-
+      bio: user.bio,
+      profileImage: user.profileImage,
+    },
+  });
 }
 module.exports = {
   registerController,
   loginController,
-  getMeController
+  getMeController,
 };

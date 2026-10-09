@@ -1,42 +1,63 @@
 import { Link } from "react-router-dom";
 import "../style/form.scss";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 
 const LoginForm = () => {
+  const [userName, setuserName] = useState("");
+  const [password, setpassword] = useState("");
 
-    const [userName, setuserName] = useState("")
-    const [password, setpassword] = useState("")
-  
+  const { loading, handleLogin } = useAuth();
 
-  function handleLoginSubmit(e) {
+  async function handleLoginSubmit(e) {
     e.preventDefault();
 
-    axios.post("http://localhost:3000/api/auth/login",{
-        userName,
-        password
-    },{
-        withCredentials: true
-    })
+    try {
+      await handleLogin(userName, password);
+    } catch (error) {
+      console.error(error);
+    }
 
-    .then((res)=>{
-        console.log(res.data)
-    })
+    axios
+      .post(
+        "http://localhost:3000/api/auth/login",
+        {
+          userName,
+          password,
+        },
+        {
+          withCredentials: true,
+        },
+      )
+      .then((res) => {
+        console.log(res.data);
+      });
   }
 
   return (
     <main>
       <div className="form-container">
         <h1>Login</h1>
-        <form onSubmit={handleLoginSubmit}>
-          <input 
-          type="text" 
-          placeholder="Enter Username" 
-          onInput={(e)=>{setuserName(e.target.value)}}/>
-          <input type="text"
-           placeholder="Enter Password" 
-           onInput={(e)=>{setpassword(e.target.value)}}/>
-          <button>Login</button>
+        <form onSubmit={handleLoginSubmit} 
+        autoComplete="off">
+          <input
+            type="text"
+            placeholder="Enter Username"
+            value={userName}
+            onChange={(e) => setuserName(e.target.value)}
+            autoComplete="off"
+          />
+          <input
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
+            autoComplete="new-password"
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? "Loading..." : "Login"}
+          </button>
         </form>
 
         <p>
