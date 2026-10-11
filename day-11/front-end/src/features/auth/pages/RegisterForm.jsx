@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../style/form.scss";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
@@ -7,6 +7,8 @@ const RegisterForm = () => {
   const [userName, setuserName] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+
+  const navigate = useNavigate()
 
   const { loading, handleRegister } = useAuth();
 
@@ -18,6 +20,7 @@ const RegisterForm = () => {
       setuserName("");
       setemail("");
       setpassword("");
+      navigate("/")
     } catch (error) {
       console.error(
         error.response?.data?.message || error.message

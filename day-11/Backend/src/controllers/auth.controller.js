@@ -65,7 +65,7 @@ async function loginController(req, res) {
 
   const user = await userModel.findOne({
     userName,
-  });
+}).select("+password");
 
   //check userName/email already exist or not
   if (!user) {

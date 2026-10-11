@@ -97,7 +97,6 @@ async function likePostController(req, res) {
   });
 }
 
-
 async function UnlikePostController(req, res) {
   const userName = req.user.userName;
   const postId = req.params.postId;
@@ -110,7 +109,7 @@ async function UnlikePostController(req, res) {
     });
   }
 
-    // Find user's like on this post
+  // Find user's like on this post
   const like = await likeModel.findOne({
     post: postId,
     user: userName,
@@ -131,16 +130,20 @@ async function UnlikePostController(req, res) {
   });
 }
 
+async function getFeedPostController(req, res) {
+  const posts = await postModel.find().populate("user");
 
-
-
-
-
+  res.status(200).json({
+    message: "Posts fetched successfully",
+    posts,
+  });
+}
 
 module.exports = {
   createPostController,
   getPostController,
   getPostDetailsControllers,
   likePostController,
-  UnlikePostController
-}
+  UnlikePostController,
+  getFeedPostController,
+};

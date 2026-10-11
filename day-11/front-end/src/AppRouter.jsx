@@ -7,6 +7,7 @@ export function AppRouter() {
     <Routes>
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/login" element={<LoginForm />} />
+      <Route path="/" element={<h1>This is my insta clone page</h1>} />
     </Routes>
   );
 }
