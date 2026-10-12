@@ -15,6 +15,8 @@ const LoginForm = () => {
 
     try {
       await handleLogin(userName, password);
+      setuserName("");
+      setpassword("");
     } catch (error) {
       console.error(error);
     }

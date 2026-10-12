@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
       setUser(response.user);
       return response;
     } catch (error) {
-      console.log("REGISTER ERROR:", error.response?.data || error.message);
+      console.error(error)
       throw error;
     } finally {
       setLoading(false);

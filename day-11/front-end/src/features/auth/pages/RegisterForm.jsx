@@ -22,9 +22,7 @@ const RegisterForm = () => {
       setpassword("");
       navigate("/")
     } catch (error) {
-      console.error(
-        error.response?.data?.message || error.message
-      );
+      console.error(error);
     }
   }
 
