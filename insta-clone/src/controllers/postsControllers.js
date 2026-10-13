@@ -1,8 +1,7 @@
-
 const postsModel = require("../model/postsModel");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
-const jwt = require("jsonwebtoken");
+
 
 const imageKit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -12,34 +11,9 @@ async function createPostsController(req, res) {
   try {
     const { caption } = req.body;
 
-    // 1. Check image first
-    if (!req.file) {
-      return res.status(400).json({
-        message: "Image is required",
-      });
-    }
-
-    // 2. Check token
-    const token = req.cookies?.Token;
-
-    if (!token) {
-      return res.status(401).json({
-        message: "Token not provided. Please login.",
-      });
-    }
-
-    // 3. Verify token
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET_KEY
-    );
-
     // 4. Upload image to ImageKit
     const file = await imageKit.files.upload({
-      file: await toFile(
-        req.file.buffer,
-        req.file.originalname
-      ),
+      file: await toFile(req.file.buffer, req.file.originalname),
       fileName: req.file.originalname,
       folder: "/insta-posts",
     });
@@ -48,7 +22,7 @@ async function createPostsController(req, res) {
     const posts = await postsModel.create({
       imgURL: file.url,
       caption,
-      userId: decoded.id,
+      userId: req.user.id,
     });
 
     return res.status(201).json({
@@ -64,6 +38,84 @@ async function createPostsController(req, res) {
   }
 }
 
+async function getPostController(req, res) {
+  try {
+
+    const posts = await postsModel.find({
+      userId: req.user.id
+    })
+
+    return res.status(200).json({
+      message: "Posts fetched successfully",
+      posts,
+    });
+  } catch (error) {
+    console.error("Get posts error:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch posts",
+    });
+  }
+}
+
+async function getPostDetailsController(req, res) {
+
+  const postId = req.params.postId
+  const userId = req.user.id
+  try {
+    const post = await postsModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+      });
+    }
+
+    const isValidUser = post.userId.toString() === userId.toString();
+
+    if (!isValidUser) {
+      return res.status(403).json({
+        message: "Forbidden content",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Post details fetched successfully",
+      post,
+    });
+  } catch (error) {
+    console.error("Get post details error:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch post details",
+    });
+  }
+}
+
+
+async function getFeedController(req, res) {
+  try {
+    const posts = await postsModel.find()
+      .populate("userId")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      message: "Posts fetched successfully",
+      posts,
+    });
+  } catch (error) {
+    console.error("Get feed error:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch posts",
+    });
+  }
+}
+
+
 module.exports = {
   createPostsController,
+  getPostController,
+  getPostDetailsController,
+  getFeedController
 };

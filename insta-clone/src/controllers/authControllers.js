@@ -71,7 +71,7 @@ async function usersLoginController(req, res) {
       });
     }
 
-     const token = jwt.sign(
+    const token = jwt.sign(
       {
         id: user._id,
         userName: user.userName,
@@ -81,7 +81,7 @@ async function usersLoginController(req, res) {
     );
 
     res.cookie("Token", token);
-    
+
     res.status(200).json({
       message: "User logged in successfully",
       user,
@@ -90,6 +90,7 @@ async function usersLoginController(req, res) {
     console.error("Login error:", error);
   }
 }
+
 
 module.exports = {
   usersRegisterController,
