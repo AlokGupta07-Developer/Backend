@@ -1,7 +1,7 @@
 const postsModel = require("../model/postsModel");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
-
+const likeModel = require("../model/likesModel");
 
 const imageKit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -40,10 +40,9 @@ async function createPostsController(req, res) {
 
 async function getPostController(req, res) {
   try {
-
     const posts = await postsModel.find({
-      userId: req.user.id
-    })
+      userId: req.user.id,
+    });
 
     return res.status(200).json({
       message: "Posts fetched successfully",
@@ -59,9 +58,8 @@ async function getPostController(req, res) {
 }
 
 async function getPostDetailsController(req, res) {
-
-  const postId = req.params.postId
-  const userId = req.user.id
+  const postId = req.params.postId;
+  const userId = req.user.id;
   try {
     const post = await postsModel.findById(postId);
 
@@ -95,19 +93,36 @@ async function getPostDetailsController(req, res) {
 
 async function getFeedController(req, res) {
   try {
-    const posts = await postsModel.find()
-      .populate("userId")
-      .sort({ createdAt: -1 });
+    const user = req.user.userName;
+
+    const posts = await Promise.all(
+      (
+        await postsModel
+          .find()
+          .populate("userId")
+          .sort({ createdAt: -1 })
+          .lean()
+      ).map(async (post) => {
+        const isLiked = await likeModel.findOne({
+          user: user,
+          post: post._id,
+        });
+
+        post.isLiked = Boolean(isLiked);
+
+        return post;
+      }),
+    );
 
     return res.status(200).json({
-      message: "Posts fetched successfully",
+      message: "Feed fetched successfully",
       posts,
     });
   } catch (error) {
     console.error("Get feed error:", error);
 
     return res.status(500).json({
-      message: "Failed to fetch posts",
+      message: "Internal server error",
     });
   }
 }
@@ -117,5 +132,5 @@ module.exports = {
   createPostsController,
   getPostController,
   getPostDetailsController,
-  getFeedController
+  getFeedController,
 };

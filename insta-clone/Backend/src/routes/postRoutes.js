@@ -13,6 +13,7 @@ postRoutes.get("/", identifyUser, postsController.getPostController)
 
 postRoutes.get("/details/:postId", identifyUser, postsController.getPostDetailsController)
 
+//get all the posts created in the DB, API: method: GET, name: /api/posts/feed
 postRoutes.get("/feed", identifyUser, postsController.getFeedController)
 
 module.exports = postRoutes

@@ -2,12 +2,16 @@ import { useState } from "react";
 import "./styles/form.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
 
+  const navigate = useNavigate()
+
   const { loading, handleLogin } = useAuth();
+
 
   async function handleLoginSubmit(e) {
     e.preventDefault();
@@ -16,6 +20,7 @@ const Login = () => {
       await handleLogin(userName, password);
       setuserName("");
       setpassword("");
+      navigate("/")
     } catch (error) {
       console.error(error);
     }
