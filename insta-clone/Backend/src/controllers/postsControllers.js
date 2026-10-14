@@ -11,29 +11,40 @@ async function createPostsController(req, res) {
   try {
     const { caption } = req.body;
 
-    // 4. Upload image to ImageKit
+    // Check whether image was uploaded
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Image file is required",
+      });
+    }
+
+    // Upload image to ImageKit
     const file = await imageKit.files.upload({
       file: await toFile(req.file.buffer, req.file.originalname),
       fileName: req.file.originalname,
       folder: "/insta-posts",
     });
 
-    // 5. Save post in MongoDB
-    const posts = await postsModel.create({
+    // Save post in MongoDB
+    const post = await postsModel.create({
       imgURL: file.url,
       caption,
       userId: req.user.id,
     });
 
+    // Populate user details for frontend
+    await post.populate("userId", "userName profilePicture");
+
     return res.status(201).json({
       message: "Post created successfully",
-      posts,
+      post,
     });
   } catch (error) {
     console.error("Create posts error:", error);
 
     return res.status(500).json({
       message: "Failed to create post",
+      error: error.message,
     });
   }
 }
@@ -90,7 +101,6 @@ async function getPostDetailsController(req, res) {
   }
 }
 
-
 async function getFeedController(req, res) {
   try {
     const user = req.user.userName;
@@ -126,7 +136,6 @@ async function getFeedController(req, res) {
     });
   }
 }
-
 
 module.exports = {
   createPostsController,

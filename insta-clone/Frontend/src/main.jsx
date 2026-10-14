@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import "./style.scss";
+import "./features/shared/global.scss";
 import AppRouter from "./AppRouter";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./features/Auth/AuthContext";
