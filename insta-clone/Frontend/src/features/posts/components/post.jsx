@@ -1,5 +1,11 @@
-const Post = ({ user, post }) => {
+
+const Post = ({ user, post, loading, handleLike, handleDisLike }) => {
   console.log("User inside Post:", user);
+
+  if(loading) {
+    return "Like is loading..."
+  }
+
   return (
     <div className="post">
       <div className="user">
@@ -14,7 +20,8 @@ const Post = ({ user, post }) => {
 
       <div className="icons">
         <div className="left">
-          <button className={post.isLiked ? "like" : ""}>
+          <button className={post.isLiked ? "like" : ""}
+          onClick={()=>{post.isLiked?handleDisLike(post._id): handleLike(post._id)}}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

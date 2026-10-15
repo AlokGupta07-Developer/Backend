@@ -5,7 +5,7 @@ import Post from "../components/post";
 import Navbar from "../../shared/components/Navbar";
 
 const Feed = () => {
-  const { feed, handleGetFeed, loading } = usePost();
+  const { feed, handleGetFeed, loading, handleLike, handleDisLike } = usePost();
 
   useEffect(() => {
     handleGetFeed();
@@ -29,7 +29,7 @@ const Feed = () => {
           {feed
             .filter((post) => post && post._id)
             .map((post) => (
-              <Post key={post._id} user={post.userId} post={post} />
+              <Post key={post._id} user={post.userId} post={post} loading={loading} handleLike={handleLike} handleDisLike={handleDisLike}/>
             ))}
         </div>
       </div>
