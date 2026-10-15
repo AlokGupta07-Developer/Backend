@@ -6,14 +6,14 @@ const Navbar = () => {
     const navigate = useNavigate()
   return (
     <nav className="nav-bar">
-        <p>Insta</p>
+        <p>Instagram</p>
         <button 
         className="button primary-button"
         onClick={()=>{navigate("/create-post")}}>Create post</button>
+    </nav>
 
 
       
-    </nav>
   )
 }
 

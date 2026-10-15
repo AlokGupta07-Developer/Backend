@@ -18,7 +18,7 @@ const Register = () => {
       setuserName("");
       setemail("");
       setpassword("");
-      navigate("/")
+      navigate("/login")
     } catch (error) {
       console.error(error);
     }
@@ -66,6 +66,7 @@ const Register = () => {
               {" "} 
               Login
             </Link>
+          
           </p>
         </div>
       </main>
