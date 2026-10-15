@@ -5,6 +5,8 @@ import {
   createPost,
   likePost,
   disLikePost,
+  followUser,
+  unfollowUser
 } from "../services/post.api.js";
 
 export const usePost = () => {
@@ -67,6 +69,45 @@ export const usePost = () => {
     }
   };
 
+const handleFollowUser = async (userName) => {
+  try {
+    await followUser(userName);
+
+    setFeed((prevFeed) =>
+      prevFeed.map((post) =>
+        post.userId?.userName === userName
+          ? {
+              ...post,
+              userId: { ...post.userId, isFollowing: true },
+            }
+          : post
+      )
+    );
+  } catch (error) {
+    console.error("Follow failed:", error.response?.data || error.message);
+  }
+};
+
+const handleUnfollowUser = async (userName) => {
+  try {
+    await unfollowUser(userName);
+
+    setFeed((prevFeed) =>
+      prevFeed.map((post) =>
+        post.userId?.userName === userName
+          ? {
+              ...post,
+              userId: { ...post.userId, isFollowing: false },
+            }
+          : post
+      )
+    );
+  } catch (error) {
+    console.error("Unfollow failed:", error.response?.data || error.message);
+  }
+};
+
+
   useEffect(() => {
     handleGetFeed();
   }, []);
@@ -79,5 +120,7 @@ export const usePost = () => {
     handleCreatePost,
     handleLike,
     handleDisLike,
+    handleFollowUser,
+    handleUnfollowUser
   };
 };

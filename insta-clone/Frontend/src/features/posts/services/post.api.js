@@ -1,12 +1,12 @@
 import  axios  from "axios";
 
 export const api = axios.create({
-    baseURL: "http://localhost:3000/api/posts",
+    baseURL: "http://localhost:3000/api",
     withCredentials: true
 })
 
 export async function getFeed() {
-    const response = await api.get("/feed") 
+    const response = await api.get("/posts/feed") 
     console.log("Feed Response:",response.data)
     return response.data
     
@@ -19,18 +19,28 @@ export async function createPost(imageFile, caption) {
     formData.append("image", imageFile)
     formData.append("caption", caption)
 
-    const response = await api.post("/", formData)
+    const response = await api.post("/posts/", formData)
 
     return response.data
 }
 
 
 export async function likePost(postId) {
-  const response = await api.post(`/like/${postId}`);
+  const response = await api.post(`/posts/like/${postId}`);
   return response.data;
 }
 
 export async function disLikePost(postId) {
-  const response = await api.post(`/disLike/${postId}`);
+  const response = await api.post(`/posts/disLike/${postId}`);
   return response.data;
+}
+
+export async function followUser(userName) {
+  const response = await api.post(`/follow/${userName}`)
+  return response.data
+}
+
+export async function unfollowUser(userName) {
+  const response = await api.post(`/unFollow/${userName}`) 
+  return response.data
 }

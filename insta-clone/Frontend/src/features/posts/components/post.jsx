@@ -1,5 +1,5 @@
 
-const Post = ({ user, post, loading, handleLike, handleDisLike }) => {
+const Post = ({ user, post, loading, handleLike, handleDisLike, handleFollowUser, handleUnfollowUser }) => {
   console.log("User inside Post:", user);
 
   if(loading) {
@@ -8,13 +8,23 @@ const Post = ({ user, post, loading, handleLike, handleDisLike }) => {
 
   return (
     <div className="post">
-      <div className="user">
-        <div className="img-wrapper">
-          <img src={user?.profilePicture} alt={user?.userName || "User"} />
-        </div>
+     <div className="user">
+  <div className="img-wrapper">
+    <img src={user?.profilePicture} alt={user?.userName || "User"} />
+  </div>
 
-        <p>{user?.userName}</p>
-      </div>
+  <p>{user?.userName}</p>
+<button
+  className={`follow-btn ${user?.isFollowing ? "following" : ""}`}
+  onClick={() =>
+    user?.isFollowing
+      ? handleUnfollowUser(user.userName)
+      : handleFollowUser(user.userName)
+  }
+>
+  {user?.isFollowing ? "Following" : "Follow"}
+</button>
+</div>
 
       <img src={post?.imgURL} alt="Post" />
 
